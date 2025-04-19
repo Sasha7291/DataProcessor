@@ -13,6 +13,11 @@
 #include <unordered_map>
 #endif
 
+#include <algorithm>
+#include <cmath>
+#include <numeric>
+#include <optional>
+
 
 namespace psr
 {

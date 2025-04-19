@@ -12,17 +12,21 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt6 COMPONENTS Core)
 
-set(SRC_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(INCLUDE_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/include)
-file(GLOB SOURCES ${SRC_ROOT}/*.cpp ${SRC_ROOT}/*/*.cpp)
 file(GLOB HEADERS ${INCLUDE_ROOT}/*.h ${INCLUDE_ROOT}/*/*.h)
 
-add_library(${PROJECT_NAME} STATIC ${HEADERS} ${SOURCES})
+add_library(${PROJECT_NAME} STATIC ${HEADERS})
 if (${Qt6_FOUND})
   target_compile_definitions(${PROJECT_NAME} PRIVATE QT)
   target_link_libraries(${PROJECT_NAME} Qt6::Core)
 endif()
 target_include_directories(${PROJECT_NAME} PUBLIC
+  ${INCLUDE_ROOT}
+  ${INCLUDE_ROOT}/filters
+  ${INCLUDE_ROOT}/relation
+  ${INCLUDE_ROOT}/statistics
+)
+target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
   ${INCLUDE_ROOT}
   ${INCLUDE_ROOT}/filters
   ${INCLUDE_ROOT}/relation

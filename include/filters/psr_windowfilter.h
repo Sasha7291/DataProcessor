@@ -6,6 +6,7 @@
 namespace psr
 {
 
+template<class T>
 class WindowFilter
 {
 
@@ -13,9 +14,27 @@ protected:
     WindowFilter() noexcept = default;
     virtual ~WindowFilter() noexcept = default;
 
-    template<class T, class FilterFunction>
+    template<class FilterFunction>
     [[nodiscard]] OutputRange<T> operator()(ConstInputRange<T> data, unsigned width, FilterFunction func) const noexcept;
 
 };
+
+template<class T>
+template<class FilterFunction>
+OutputRange<T> WindowFilter<T>::operator()(ConstInputRange<T> data, unsigned width, FilterFunction func) const noexcept
+{
+    OutputRange<T> result{data.cbegin(), data.cend()};
+
+    for (auto i = 0u; i < width; ++i)
+    {
+        result.insert(result.begin(), result.front());
+        result.push_back(result.back());
+    }
+
+    for (auto it = result.begin() + width; it != result.end() - width; ++it)
+        *it = func({it - width, it + width});
+
+    return result;
+}
 
 }

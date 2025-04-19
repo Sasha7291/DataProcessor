@@ -1,6 +1,6 @@
 #pragma once
 
-#include "psr_common.h"
+#include "psr_integration.h"
 
 
 namespace psr
@@ -22,5 +22,47 @@ private:
     std::optional<OutputRange<T>> difference_;
 
 };
+
+template<class T>
+CurvesProximity<T>::CurvesProximity(ConstInputRange<T> difference) noexcept
+    : difference_{std::make_optional<OutputRange<T>>({difference.cbegin(), difference.cend()})}
+{}
+
+template<class T>
+CurvesProximity<T>::CurvesProximity() noexcept
+    : difference_{std::nullopt}
+{}
+
+template<class T>
+double CurvesProximity<T>::operator()(ConstInputRange<T> x, ConstInputRange<T> y1, ConstInputRange<T> y2) const noexcept
+{
+    OutputRange<T> difference = difference_.value_or(OutputRange<T>{});
+    if (!difference_.has_value())
+    {
+        difference.reserve(y1.size());
+
+        std::ranges::transform(y1, y2, std::back_inserter(difference), [](T val1, T val2) -> T {
+            return (val1 - val2) * (val1 - val2);
+        });
+    }
+
+    return std::sqrt(Integration<T>{}(x, difference) / (x.back() - x.front()));
+}
+
+template<class T>
+double CurvesProximity<T>::operator()(ConstInputRange<T> y1, ConstInputRange<T> y2) const noexcept
+{
+    OutputRange<T> difference = difference_.value_or(OutputRange<T>{});
+    if (!difference_.has_value())
+    {
+        difference.reserve(y1.size());
+
+        std::ranges::transform(y1, y2, std::back_inserter(difference), [](T val1, T val2) -> T {
+            return std::abs(val1 - val2);
+        });
+    }
+
+    return *std::ranges::max_element(difference);
+}
 
 }
