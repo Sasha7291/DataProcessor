@@ -3,7 +3,7 @@
 
 #ifdef QT
 #include <QHash>
-#include <QMap>
+#include <QMultiMap>
 #include <QSpan>
 #include <QVector>
 #else
@@ -31,6 +31,8 @@ using OutputRange = QVector<T>;
 template<class T, class K>
 using Map = QMap<T, K>;
 template<class T, class K>
+using MultiMap = QMultiMap<T, K>;
+template<class T, class K>
 using UnorderedMap = QHash<T, K>;
 #else
 template<class T>
@@ -41,6 +43,8 @@ template<class T>
 using OutputRange = std::vector<T>;
 template<class T, class K>
 using Map = std::map<T, K>;
+template<class T, class K>
+using MultiMap = std::multimap<T, K>;
 template<class T, class K>
 using UnorderedMap = std::unordered_map<T, K>;
 #endif

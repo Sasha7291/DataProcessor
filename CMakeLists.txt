@@ -17,7 +17,7 @@ file(GLOB HEADERS ${INCLUDE_ROOT}/*.h ${INCLUDE_ROOT}/*/*.h)
 
 add_library(${PROJECT_NAME} STATIC ${HEADERS})
 if (${Qt6_FOUND})
-  target_compile_definitions(${PROJECT_NAME} PRIVATE QT)
+  target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE QT)
   target_link_libraries(${PROJECT_NAME} Qt6::Core)
 endif()
 target_include_directories(${PROJECT_NAME} PUBLIC

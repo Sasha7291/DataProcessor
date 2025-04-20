@@ -14,30 +14,37 @@ public:
     Rank() noexcept = default;
     ~Rank() noexcept = default;
 
-    [[nodiscard(R"(Time complexity O(data.size() * log(data.size())))")]] OutputRange<unsigned> operator()(ConstInputRange<T> data) const noexcept;
+    [[nodiscard(R"(Time complexity O(data.size() * log(data.size())))")]] OutputRange<double> operator()(ConstInputRange<T> data) const noexcept;
 
 };
 
+
 template<class T>
-OutputRange<unsigned> Rank<T>::operator()(ConstInputRange<T> data) const noexcept
+OutputRange<double> Rank<T>::operator()(ConstInputRange<T> data) const noexcept
 {
-    Map<T, unsigned> rankedValues;
+    MultiMap<T, int> indicies;
     for (auto i = 0; i < data.size(); ++i)
-        rankedValues[data[i]] = i;
+        indicies.insert(data[i], i);
 
-#ifdef QT
-    return rankedValues.values();
-#else
-    OutputRange<unsigned> result;
-    result.reserve(data.size());
+    Map<T, int> counts;
+    for (const auto value : indicies.keys())
+        ++counts[value];
 
-    std::ranges::transform(rankedValues, std::back_inserter(result), [](const auto &pair) -> unsigned {
-        return pair.second;
-    });
+    OutputRange<double> ranks(data.size());
+    int i = 1;
+    for (const auto &value : counts.keys())
+    {
+        double rank = 0.0;
+        for (auto j = i; j < i + indicies.count(value); ++j)
+            rank += j;
+        rank /= indicies.count(value);
 
-    return result;
-#endif
+        for (const auto &index : indicies.values(value))
+            ranks[index] = rank;
+        i += indicies.count(value);
+    }
+
+    return ranks;
 }
-
 
 }
