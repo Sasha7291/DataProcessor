@@ -52,8 +52,9 @@ double SpearmanCoefficient<T>::operator()(ConstInputRange<T> x, ConstInputRange<
     double averY = averageY_.has_value() ? averageY_.value() : Average<double>{}(rankY);
     double varX = varianceX_.has_value() ? varianceX_.value() : Variance<double>{averX}(rankX);
     double varY = varianceY_.has_value() ? varianceY_.value() : Variance<double>{averY}(rankY);
+    double result = Covariance<double>{averX, averY}(rankX, rankY) / (varX * varY);
 
-    return Covariance<double>{averX, averY}(rankX, rankY) / (varX * varY);
+    return result;
 }
 
 }

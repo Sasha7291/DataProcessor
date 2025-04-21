@@ -22,26 +22,31 @@ public:
 template<class T>
 OutputRange<double> Rank<T>::operator()(ConstInputRange<T> data) const noexcept
 {
-    MultiMap<T, int> indicies;
-    for (auto i = 0; i < data.size(); ++i)
-        indicies.insert(data[i], i);
+    OutputRange<std::pair<T, int>> temp(data.size());
+    for (int i = 0; i < data.size(); i++)
+    {
+        temp[i].first = data[i];
+        temp[i].second = i;
+    }
 
-    Map<T, int> counts;
-    for (const auto value : indicies.keys())
-        ++counts[value];
+    std::sort(temp.begin(), temp.end(), [](const auto &val1, const auto &val2) -> bool {
+        return val1.first < val2.first;
+    });
 
     OutputRange<double> ranks(data.size());
-    int i = 1;
-    for (const auto &value : counts.keys())
+    double rank = 1.0;
+    int m = 1;
+    for (int i = 0; i < data.size(); i += m)
     {
-        double rank = 0.0;
-        for (auto j = i; j < i + indicies.count(value); ++j)
-            rank += j;
-        rank /= indicies.count(value);
+        auto j = i;
+        while (j < data.size() - 1 && temp[j].first == temp[j + 1].first)
+            j += 1;
+        m = j - i + 1;
 
-        for (const auto &index : indicies.values(value))
-            ranks[index] = rank;
-        i += indicies.count(value);
+        for (int k = 0; k < m; k++)
+            ranks[temp[i + k].second] = rank + (m - 1) * 0.5;
+
+        rank += m;
     }
 
     return ranks;
