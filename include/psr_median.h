@@ -2,8 +2,6 @@
 
 #include "psr_common.h"
 
-#include <set>
-
 
 namespace psr
 {
@@ -23,7 +21,8 @@ public:
 template<class T>
 T Median<T>::operator()(ConstInputRange<T> data) const noexcept
 {
-    std::multiset sortedData{data.cbegin(), data.cend()};
+    OutputRange<T> sortedData{data.cbegin(), data.cend()};
+    std::ranges::sort(sortedData);
     auto middleElement = sortedData.cbegin() + data.size() / 2;
 
     return (data.size() & 1)

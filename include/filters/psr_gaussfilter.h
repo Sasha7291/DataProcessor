@@ -8,7 +8,7 @@ namespace psr
 {
 
 template<class T>
-class GaussFilter : public WindowFilter
+class GaussFilter : public WindowFilter<T>
 {
 
 public:
@@ -21,13 +21,13 @@ public:
 
 template<class T>
 GaussFilter<T>::GaussFilter() noexcept
-    : WindowFilter{}
+    : WindowFilter<T>{}
 {}
 
 template<class T>
 OutputRange<T> GaussFilter<T>::operator()(ConstInputRange<T> data, unsigned int width) const noexcept
 {
-    return operator()(data, width, Gauss{width});
+    return this->filter(data, width, Gauss<T>{width});
 }
 
 }
