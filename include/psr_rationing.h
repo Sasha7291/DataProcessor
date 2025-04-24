@@ -41,8 +41,8 @@ OutputRange<T> Rationing<T>::operator()(ConstInputRange<T> data) const noexcept
     OutputRange<T> result;
     result.reserve(data.size());
 
-    const auto [min, max] = *std::ranges::minmax(data);
-    std::ranges::transform(data, std::back_inserter(result), [oldRange = oldRange_.value_or(std::make_pair(min, max - min)), newRange = newRange_](T value) -> T {
+    const auto [min, max] = std::ranges::minmax(data);
+    std::ranges::transform(data, std::back_inserter(result), [oldRange = oldRange_.value_or(std::make_pair(min, max - min)), newRange = newRange_.value()](T value) -> T {
         return (value - oldRange.first) / (oldRange.second - oldRange.first) * (newRange.second - newRange.first) + newRange.first;
     });
 
