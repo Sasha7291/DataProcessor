@@ -34,6 +34,8 @@ OutputRange<T> WindowFilter<T>::filter(ConstInputRange<T> data, unsigned width, 
     for (auto it = result.begin() + width; it != result.end() - width; ++it)
         *it = func({it - width / 2, it + width / 2});
 
+    result.erase(result.begin(), result.begin() + width);
+    result.erase(result.end() - width, result.end());
     return result;
 }
 

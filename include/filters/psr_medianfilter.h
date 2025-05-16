@@ -25,7 +25,7 @@ MedianFilter<T>::MedianFilter() noexcept
 {}
 
 template<class T>
-OutputRange<T> MedianFilter<T>::operator()(ConstInputRange<T> data, unsigned int width) const noexcept
+OutputRange<T> MedianFilter<T>::operator()(ConstInputRange<T> data, unsigned width) const noexcept
 {
     return this->filter(data, width, Median<T>{});
 }
