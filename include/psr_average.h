@@ -14,7 +14,6 @@ public:
     Average() noexcept = default;
     ~Average() noexcept = default;
 
-
     [[nodiscard(R"(Time omplexity O(data.size()))")]] double operator()(ConstInputRange<T> data) const noexcept;
     [[nodiscard(R"(Time complexity O(data.size()))")]] double operator()(ConstInputRange<T> weights, ConstInputRange<T> data) const noexcept;
     [[nodiscard(R"(Time complexity O(data.size()))")]] double operator()(ConstInputRange<T> data, unsigned n) const noexcept;

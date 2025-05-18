@@ -1,5 +1,6 @@
 #pragma once
 
+#include "psr_average.h"
 #include "psr_integration.h"
 
 
@@ -58,11 +59,11 @@ double CurvesProximity<T>::operator()(ConstInputRange<T> y1, ConstInputRange<T> 
         difference.reserve(y1.size());
 
         std::ranges::transform(y1, y2, std::back_inserter(difference), [](T val1, T val2) -> T {
-            return std::abs(val1 - val2);
+            return (val1 - val2);
         });
     }
 
-    return *std::ranges::max_element(difference);
+    return Average<T>{}(difference, 2);
 }
 
 }
