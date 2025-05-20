@@ -15,17 +15,17 @@ protected:
     virtual ~WindowFilter() noexcept = default;
 
     template<class FilterFunction>
-    [[nodiscard]] OutputRange<T> filter(ConstInputRange<T> data, unsigned width, FilterFunction func) const noexcept;
+    [[nodiscard]] OutputRange<T> filter(ConstInputRange<T> data, std::size_t width, FilterFunction func) const noexcept;
 
 };
 
 template<class T>
 template<class FilterFunction>
-OutputRange<T> WindowFilter<T>::filter(ConstInputRange<T> data, unsigned width, FilterFunction func) const noexcept
+OutputRange<T> WindowFilter<T>::filter(ConstInputRange<T> data, std::size_t width, FilterFunction func) const noexcept
 {
     OutputRange<T> result{data.cbegin(), data.cend()};
 
-    for (auto i = 0u; i < width; ++i)
+    for (std::size_t i = 0ull; i < width; ++i)
     {
         result.insert(result.begin(), result.front());
         result.push_back(result.back());
@@ -36,6 +36,7 @@ OutputRange<T> WindowFilter<T>::filter(ConstInputRange<T> data, unsigned width, 
 
     result.erase(result.begin(), result.begin() + width);
     result.erase(result.end() - width, result.end());
+
     return result;
 }
 

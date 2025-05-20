@@ -15,7 +15,7 @@ public:
     MedianFilter() noexcept;
     ~MedianFilter() noexcept = default;
 
-    [[nodiscard]] OutputRange<T> operator()(ConstInputRange<T> data, unsigned width) const noexcept;
+    [[nodiscard]] OutputRange<T> operator()(ConstInputRange<T> data, std::size_t width) const noexcept;
 
 };
 
@@ -25,7 +25,7 @@ MedianFilter<T>::MedianFilter() noexcept
 {}
 
 template<class T>
-OutputRange<T> MedianFilter<T>::operator()(ConstInputRange<T> data, unsigned width) const noexcept
+OutputRange<T> MedianFilter<T>::operator()(ConstInputRange<T> data, std::size_t width) const noexcept
 {
     return this->filter(data, width, Median<T>{});
 }

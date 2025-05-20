@@ -15,7 +15,7 @@ public:
     GaussFilter() noexcept;
     ~GaussFilter() noexcept = default;
 
-    [[nodiscard]] OutputRange<T> operator()(ConstInputRange<T> data, unsigned width) const noexcept;
+    [[nodiscard]] OutputRange<T> operator()(ConstInputRange<T> data, std::size_t width) const noexcept;
 
 };
 
@@ -25,7 +25,7 @@ GaussFilter<T>::GaussFilter() noexcept
 {}
 
 template<class T>
-OutputRange<T> GaussFilter<T>::operator()(ConstInputRange<T> data, unsigned int width) const noexcept
+OutputRange<T> GaussFilter<T>::operator()(ConstInputRange<T> data, std::size_t width) const noexcept
 {
     return this->filter(data, width, Gauss<T>{width});
 }
