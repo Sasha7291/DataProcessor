@@ -14,7 +14,7 @@ public:
     Polynomial(T from, T to) noexcept;
     ~Polynomial() noexcept = default;
 
-    [[nodiscard(R"(Time complexity O(size))")]] std::pair<OutputRange<double>, OutputRange<T> > operator ()(std::size_t size, ConstInputRange<double> coeffs) const noexcept;
+    [[nodiscard(R"(Time complexity O(size))")]] std::pair<OutputRange<double>, OutputRange<T>> operator ()(std::size_t size, ConstInputRange<double> coeffs) const noexcept;
 
 };
 
