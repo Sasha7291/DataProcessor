@@ -23,11 +23,11 @@ double AverageRoughness<T>::operator()(ConstInputRange<T> y1, ConstInputRange<T>
 {
     OutputRange<T> difference;
     difference.reserve(y1.size());
-    std::ranges::transform(y1, y2, std::back_inserter(difference), [](double val1, double val2) -> double {
-        return std::abs(val1 - val2);
+    std::ranges::transform(y1, y2, std::back_inserter(difference), [](double value1, double value2) -> double {
+        return std::abs(value1 - value2);
     });
 
-    return Average{}(difference);
+    return Average<T>{}(difference);
 }
 
 }

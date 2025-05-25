@@ -24,12 +24,12 @@ private:
 
 template<class T>
 ExcessMeasure<T>::ExcessMeasure(double rmsRoughness)
-    : variance_{std::make_optional(rmsRoughness_)}
+    : rmsRoughness_{std::make_optional(rmsRoughness)}
 {}
 
 template<class T>
 ExcessMeasure<T>::ExcessMeasure()
-    : variance_{std::nullopt}
+    : rmsRoughness_{std::nullopt}
 {}
 
 template<class T>
@@ -37,13 +37,13 @@ double ExcessMeasure<T>::operator()(ConstInputRange<T> y1, ConstInputRange<T> y2
 {
     OutputRange<T> difference;
     difference.reserve(y1.size());
-    std::ranges::transform(y1, y2, std::back_inserter(difference), [](double val1, double val2) -> double {
-        return std::pow(y1 - y2, 4);
+    std::ranges::transform(y1, y2, std::back_inserter(difference), [](double value1, double value2) -> double {
+        return std::pow(value1 - value2, 4);
     });
 
     return rmsRoughness_.has_value()
-               ? Average{}(difference) / std::pow(variance_.value(), 4)
-               : Average{}(difference) / std::pow(RmsRoughness{}(y1, y2), 4);
+               ? Average<T>{}(difference) / std::pow(rmsRoughness_.value(), 4)
+               : Average<T>{}(difference) / std::pow(RmsRoughness<T>{}(y1, y2), 4);
 }
 
 }

@@ -24,12 +24,12 @@ private:
 
 template<class T>
 AssymetryParameter<T>::AssymetryParameter(double rmsRoughness)
-    : variance_{std::make_optional(rmsRoughness_)}
+    : rmsRoughness_{std::make_optional(rmsRoughness)}
 {}
 
 template<class T>
 AssymetryParameter<T>::AssymetryParameter()
-    : variance_{std::nullopt}
+    : rmsRoughness_{std::nullopt}
 {}
 
 template<class T>
@@ -37,13 +37,13 @@ double AssymetryParameter<T>::operator()(ConstInputRange<T> y1, ConstInputRange<
 {
     OutputRange<T> difference;
     difference.reserve(y1.size());
-    std::ranges::transform(y1, y2, std::back_inserter(difference), [](double val1, double val2) -> double {
-        return std::pow(y1 - y2, 3);
+    std::ranges::transform(y1, y2, std::back_inserter(difference), [](double value1, double value2) -> double {
+        return std::pow(value1 - value2, 3);
     });
 
     return rmsRoughness_.has_value()
-        ? Average{}(difference) / std::pow(variance_.value(), 3)
-        : Average{}(difference) / std::pow(RmsRoughness{}(y1, y2), 3);
+        ? Average<T>{}(difference) / std::pow(rmsRoughness_.value(), 3)
+        : Average<T>{}(difference) / std::pow(RmsRoughness<T>{}(y1, y2), 3);
 }
 
 ;
