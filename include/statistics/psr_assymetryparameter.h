@@ -20,7 +20,7 @@ public:
 private:
     std::optional<double> rmsRoughness_;
 
-}
+};
 
 template<class T>
 AssymetryParameter<T>::AssymetryParameter(double rmsRoughness)
