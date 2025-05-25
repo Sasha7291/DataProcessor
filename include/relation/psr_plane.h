@@ -33,7 +33,7 @@ std::tuple<OutputRange<double>, OutputRange<double>, OutputRange<T>> Plane<T>::o
     double b
 ) const
 {
-    return Relation<T>::operator()(size, [k, b](double x, double y) -> T {
+    return Relation<T>::operator()(sizeX, sizeY, [k1, k2, b](double x, double y) -> T {
         return k1 * x + k2 * y + b;
     });
 }

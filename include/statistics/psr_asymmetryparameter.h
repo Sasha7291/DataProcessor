@@ -7,13 +7,13 @@ namespace psr
 {
 
 template<class T>
-class AssymetryParameter
+class AsymmetryParameter
 {
 
 public:
-    explicit AssymetryParameter(double rmsRoughness);
-    AssymetryParameter();
-    ~AssymetryParameter() = default;
+    explicit AsymmetryParameter(double rmsRoughness);
+    AsymmetryParameter();
+    ~AsymmetryParameter() = default;
 
     [[nodiscard(R"(Time complexity O(data.size()))")]] double operator()(ConstInputRange<T> y1, ConstInputRange<T> y2) const;
 
@@ -23,17 +23,17 @@ private:
 };
 
 template<class T>
-AssymetryParameter<T>::AssymetryParameter(double rmsRoughness)
+AsymmetryParameter<T>::AsymmetryParameter(double rmsRoughness)
     : rmsRoughness_{std::make_optional(rmsRoughness)}
 {}
 
 template<class T>
-AssymetryParameter<T>::AssymetryParameter()
+AsymmetryParameter<T>::AsymmetryParameter()
     : rmsRoughness_{std::nullopt}
 {}
 
 template<class T>
-double AssymetryParameter<T>::operator()(ConstInputRange<T> y1, ConstInputRange<T> y2) const
+double AsymmetryParameter<T>::operator()(ConstInputRange<T> y1, ConstInputRange<T> y2) const
 {
     OutputRange<T> difference;
     difference.reserve(y1.size());
@@ -46,4 +46,4 @@ double AssymetryParameter<T>::operator()(ConstInputRange<T> y1, ConstInputRange<
         : Average<T>{}(difference) / std::pow(RmsRoughness<T>{}(y1, y2), 3);
 }
 
-;
+}
