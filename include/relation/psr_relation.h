@@ -61,15 +61,13 @@ std::tuple<OutputRange<double>, OutputRange<double>, OutputRange<T>> Relation<T>
     const std::function<double(double,double)> &func
 ) const
 {
-    OutputRange<double> resultX;
-    resultX.reserve(sizeX);
-    std::ranges::generate(std::back_inserter(resultX), [this, sizeX, i = 0]() mutable -> double {
+    OutputRange<double> resultX(sizeX);
+    std::ranges::generate(resultX, [this, sizeX, i = 0]() mutable -> double {
         return i++ * rangeX_.second / static_cast<double>(sizeX) + rangeX_.first;
     });
 
-    OutputRange<double> resultY;
-    resultY.reserve(sizeY);
-    std::ranges::generate(std::back_inserter(resultY), [this, sizeY, i = 0]() mutable -> double {
+    OutputRange<double> resultY(sizeY);
+    std::ranges::generate(resultY, [this, sizeY, i = 0]() mutable -> double {
         return i++ * rangeY_.second / static_cast<double>(sizeY) + rangeY_.first;
     });
 

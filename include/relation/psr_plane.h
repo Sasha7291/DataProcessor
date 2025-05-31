@@ -25,6 +25,11 @@ public:
 };
 
 template<class T>
+Plane<T>::Plane(T fromX, T toX, T fromY, T toY)
+    : Relation<T>{fromX, toX, fromY, toY}
+{}
+
+template<class T>
 std::tuple<OutputRange<double>, OutputRange<double>, OutputRange<T>> Plane<T>::operator()(
     std::size_t sizeX,
     std::size_t sizeY,
