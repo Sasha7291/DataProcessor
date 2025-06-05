@@ -61,21 +61,28 @@ std::tuple<OutputRange<double>, OutputRange<double>, OutputRange<T>> Relation<T>
     const std::function<double(double,double)> &func
 ) const
 {
-    OutputRange<double> resultX(sizeX);
-    std::ranges::generate(resultX, [this, sizeX, i = 0]() mutable -> double {
+    OutputRange<double> x(sizeX);
+    std::ranges::generate(x, [this, sizeX, i = 0]() mutable -> double {
         return i++ * rangeX_.second / static_cast<double>(sizeX) + rangeX_.first;
     });
+    OutputRange<double> resultX;
+    resultX.reserve(sizeX * sizeY);
+    for (std::size_t i = 0; i < sizeY; ++i)
+        std::ranges::copy(x, std::back_inserter(resultX));
 
-    OutputRange<double> resultY(sizeY);
-    std::ranges::generate(resultY, [this, sizeY, i = 0]() mutable -> double {
-        return i++ * rangeY_.second / static_cast<double>(sizeY) + rangeY_.first;
-    });
+    OutputRange<double> resultY;
+    resultX.reserve(sizeX * sizeY);
+    for (std::size_t i = 0; i < sizeX; ++i)
+        std::ranges::copy(
+            OutputRange<double>(sizeY, i * rangeY_.second / static_cast<double>(sizeY) + rangeY_.first),
+            std::back_inserter(resultY)
+        );
 
     OutputRange<T> resultZ;
     resultZ.reserve(sizeX * sizeY);
     for (std::size_t i = 0; i < sizeY; ++i)
         for (std::size_t j = 0; j < sizeX; ++j)
-            resultZ.push_back(func(resultX[j], resultY[i]));
+            resultZ.push_back(func(x[j], resultY[i * sizeX + j]));
 
     return std::make_tuple(resultX, resultY, resultZ);
 }

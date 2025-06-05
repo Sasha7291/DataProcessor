@@ -24,7 +24,7 @@ double RmsRoughness<T>::operator()(ConstInputRange<T> y1, ConstInputRange<T> y2)
     OutputRange<T> difference;
     difference.reserve(y1.size());
     std::ranges::transform(y1, y2, std::back_inserter(difference), [](double value1, double value2) -> double {
-        return std::pow(value1 - value2, 2);
+        return value1 - value2;
     });
 
     return Average<T>{}(difference, 2);
