@@ -29,9 +29,7 @@ OutputRange<double> Rank<T>::operator()(ConstInputRange<T> data) const noexcept
         temp[i].second = i;
     }
 
-    std::sort(temp.begin(), temp.end(), [](const auto &val1, const auto &val2) -> bool {
-        return val1.first < val2.first;
-    });
+    std::ranges::sort(temp, std::less<>(), &std::pair<T, int>::first);
 
     OutputRange<double> ranks(data.size());
     double rank = 1.0;

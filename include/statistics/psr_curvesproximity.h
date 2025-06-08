@@ -57,10 +57,7 @@ double CurvesProximity<T>::operator()(ConstInputRange<T> y1, ConstInputRange<T> 
     if (!difference_.has_value())
     {
         difference.reserve(y1.size());
-
-        std::ranges::transform(y1, y2, std::back_inserter(difference), [](T val1, T val2) -> T {
-            return (val1 - val2);
-        });
+        std::ranges::transform(y1, y2, std::back_inserter(difference), std::minus<>());
     }
 
     return Average<T>{}(difference, 2);

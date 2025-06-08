@@ -50,9 +50,8 @@ OutputRange<double> Gauss<T>::kernel(std::size_t width) const noexcept
     for (long long i = -static_cast<long long>(width / 2); i <= static_cast<long long>(width / 2); ++i)
         result.push_back(std::exp(-std::pow(i, 2) / sigma2));
 
-    std::ranges::transform(result, result.begin(), [sum = std::accumulate(result.cbegin(), result.cend(), 0.0)](double value) -> double {
-        return value / sum;
-    });
+    const auto sum = std::accumulate(result.cbegin(), result.cend(), 0.0);
+    std::ranges::transform(result, result.begin(), std::bind(std::divides<>(), std::placeholders::_1, sum));
 
     return result;
 }

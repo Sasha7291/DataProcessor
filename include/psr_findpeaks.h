@@ -1,7 +1,6 @@
 #pragma once
 
 #include "psr_common.h"
-#include <qdebug.h>
 
 
 namespace psr
@@ -76,9 +75,7 @@ OutputRange<typename PeakFinder<T>::Peak> PeakFinder<T>::operator()(ConstInputRa
     }
 
     result.erase(
-        std::remove_if(result.begin(), result.end(), [this](const Peak &p) -> bool {
-            return p.prominence < minProminence_;
-        }),
+        std::ranges::remove_if(result, std::bind(std::less<>(), std::placeholders::_1, minProminence_), &Peak::prominence),
         result.end()
     );
 

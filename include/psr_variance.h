@@ -38,9 +38,8 @@ double Variance<T>::operator()(ConstInputRange<T> data) const noexcept
     OutputRange<T> discrepancy;
     discrepancy.reserve(data.size());
 
-    std::ranges::transform(data, std::back_inserter(discrepancy), [aver = average_.has_value() ? average_.value() : Average<T>{}(data)](T value) -> T {
-        return value - aver;
-    });
+    auto aver = average_.has_value() ? average_.value() : Average<T>{}(data);
+    std::ranges::transform(data, std::back_inserter(discrepancy), std::bind(std::minus<>(), std::placeholders::_1, aver));
 
     return Average<T>{}(discrepancy, 2);
 }
