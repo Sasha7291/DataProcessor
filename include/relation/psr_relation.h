@@ -68,13 +68,11 @@ std::tuple<OutputRange<double>, OutputRange<double>, OutputRange<T>> Relation<T>
     std::ranges::generate(x, [this, sizeX, i = 0]() mutable -> double {
         return i++ * rangeX_.second / static_cast<double>(sizeX) + rangeX_.first;
     });
-    qDebug() << x;
 
     OutputRange<double> resultX;
     resultX.reserve(sizeX * sizeY);
     for (std::size_t i = 0; i < sizeY; ++i)
         std::ranges::copy(x, std::back_inserter(resultX));
-    qDebug() << resultX;
 
     OutputRange<double> resultY;
     resultY.reserve(sizeX * sizeY);
@@ -83,14 +81,12 @@ std::tuple<OutputRange<double>, OutputRange<double>, OutputRange<T>> Relation<T>
             OutputRange<double>(sizeY, i * rangeY_.second / static_cast<double>(sizeY) + rangeY_.first),
             std::back_inserter(resultY)
         );
-    qDebug() << resultX;
 
     OutputRange<T> resultZ;
     resultZ.reserve(sizeX * sizeY);
     for (std::size_t i = 0; i < sizeY; ++i)
         for (std::size_t j = 0; j < sizeX; ++j)
             resultZ.push_back(func(x[j], resultY[i * sizeX + j]));
-    qDebug() << resultZ;
 
     return std::make_tuple(resultX, resultY, resultZ);
 }
