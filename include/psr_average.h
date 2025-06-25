@@ -14,7 +14,7 @@ public:
     Average() = default;
     ~Average() = default;
 
-    [[nodiscard(R"(Time omplexity O(data.size()))")]] double operator()(ConstInputRange<T> data) const;
+    [[nodiscard(R"(Time complexity O(data.size()))")]] double operator()(ConstInputRange<T> data) const;
     [[nodiscard(R"(Time complexity O(data.size()))")]] double operator()(ConstInputRange<T> weights, ConstInputRange<T> data) const;
     [[nodiscard(R"(Time complexity O(data.size()))")]] double operator()(ConstInputRange<T> data, int n) const;
 
