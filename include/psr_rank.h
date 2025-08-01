@@ -11,16 +11,16 @@ class Rank
 {
 
 public:
-    Rank() noexcept = default;
-    ~Rank() noexcept = default;
+    Rank() = default;
+    ~Rank() = default;
 
-    [[nodiscard(R"(Time complexity O(data.size() * log(data.size())))")]] OutputRange<double> operator()(ConstInputRange<T> data) const noexcept;
+    [[nodiscard(R"(Time complexity O(data.size() * log(data.size())))")]] OutputRange<double> operator()(ConstInputRange<T> data) const;
 
 };
 
 
 template<class T>
-OutputRange<double> Rank<T>::operator()(ConstInputRange<T> data) const noexcept
+OutputRange<double> Rank<T>::operator()(ConstInputRange<T> data) const
 {
     OutputRange<std::pair<T, int>> temp(data.size());
     for (int i = 0; i < data.size(); i++)

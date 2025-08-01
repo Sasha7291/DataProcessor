@@ -1,5 +1,6 @@
 #pragma once
 
+#include <version>
 
 #ifdef QT
 #include <QHash>
@@ -19,6 +20,7 @@
 #include <functional>
 #include <numeric>
 #include <optional>
+#include <ranges>
 
 
 namespace psr

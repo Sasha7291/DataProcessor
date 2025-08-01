@@ -11,11 +11,11 @@ class Covariance
 {
 
 public:
-    Covariance(double averageX, double averageY) noexcept;
-    Covariance() noexcept;
-    ~Covariance() noexcept = default;
+    Covariance(double averageX, double averageY);
+    Covariance();
+    ~Covariance() = default;
 
-    [[nodiscard(R"(Time complexity O(x.size()))")]] T operator()(ConstInputRange<T> x, ConstInputRange<T> y) const noexcept;
+    [[nodiscard(R"(Time complexity O(x.size()))")]] T operator()(ConstInputRange<T> x, ConstInputRange<T> y) const;
 
 private:
     std::optional<double> averageX_;
@@ -24,19 +24,19 @@ private:
 };
 
 template<class T>
-Covariance<T>::Covariance(double averageX, double averageY) noexcept
+Covariance<T>::Covariance(double averageX, double averageY)
     : averageX_{std::make_optional(averageX)}
     , averageY_{std::make_optional(averageY)}
 {}
 
 template<class T>
-Covariance<T>::Covariance() noexcept
+Covariance<T>::Covariance()
     : averageX_{std::nullopt}
     , averageY_{std::nullopt}
 {}
 
 template<class T>
-T Covariance<T>::operator()(ConstInputRange<T> x, ConstInputRange<T> y) const noexcept
+T Covariance<T>::operator()(ConstInputRange<T> x, ConstInputRange<T> y) const
 {
     auto averX = averageX_.has_value() ? averageX_.value() : Average<T>{}(x);
     auto averY = averageY_.has_value() ? averageY_.value() : Average<T>{}(y);

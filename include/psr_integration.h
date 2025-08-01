@@ -11,15 +11,15 @@ class Integration
 {
 
 public:
-    Integration() noexcept = default;
-    ~Integration() noexcept = default;
+    Integration() = default;
+    ~Integration() = default;
 
-    [[nodiscard(R"(Time complexity O(data.size()))")]] double operator()(ConstInputRange<T> x, ConstInputRange<T> y) const noexcept;
+    [[nodiscard(R"(Time complexity O(data.size()))")]] double operator()(ConstInputRange<T> x, ConstInputRange<T> y) const;
 
 };
 
 template<class T>
-double Integration<T>::operator()(ConstInputRange<T> x, ConstInputRange<T> y) const noexcept
+double Integration<T>::operator()(ConstInputRange<T> x, ConstInputRange<T> y) const
 {
     double result = 0.0;
 

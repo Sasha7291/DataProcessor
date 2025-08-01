@@ -11,11 +11,11 @@ class Rationing
 {
 
 public:
-    Rationing(const std::pair<T, T> &oldRange, const std::pair<T, T> &newRange) noexcept;
-    Rationing() noexcept;
-    ~Rationing() noexcept = default;
+    Rationing(const std::pair<T, T> &oldRange, const std::pair<T, T> &newRange);
+    Rationing();
+    ~Rationing() = default;
 
-    [[nodiscard(R"(Time complexity O(data.size()))")]] OutputRange<T> operator()(ConstInputRange<T> data) const noexcept;
+    [[nodiscard(R"(Time complexity O(data.size()))")]] OutputRange<T> operator()(ConstInputRange<T> data) const;
 
 private:
     std::optional<std::pair<double, double>> oldRange_;
@@ -24,7 +24,7 @@ private:
 };
 
 template<class T>
-Rationing<T>::Rationing(const std::pair<T, T> &oldRange, const std::pair<T, T> &newRange) noexcept
+Rationing<T>::Rationing(const std::pair<T, T> &oldRange, const std::pair<T, T> &newRange)
     : oldRange_{std::make_optional(std::make_pair(
         static_cast<double>(oldRange.first),
         static_cast<double>(oldRange.second - oldRange.first
@@ -36,14 +36,24 @@ Rationing<T>::Rationing(const std::pair<T, T> &oldRange, const std::pair<T, T> &
 {}
 
 template<class T>
-Rationing<T>::Rationing() noexcept
+Rationing<T>::Rationing()
     : oldRange_{std::nullopt}
     , newRange_{std::make_optional(std::make_pair(0.0, 1.0))}
 {}
 
 template<class T>
-OutputRange<T> Rationing<T>::operator()(ConstInputRange<T> data) const noexcept
+OutputRange<T> Rationing<T>::operator()(ConstInputRange<T> data) const
 {
+#if __cplusplus >= 202302L
+    const auto [min, max] = std::ranges::minmax(data);
+    return data
+        | std::views::transform(
+            [oldRange = oldRange_.value_or(std::make_pair(min, max - min)), newRange = newRange_.value()](T value) -> T {
+                return static_cast<T>((static_cast<double>(value) - oldRange.first) / oldRange.second * newRange.second + newRange.first);
+            }
+        )
+        | std::ranges::to<OutputRange>();
+#else
     OutputRange<T> result;
     result.reserve(data.size());
 
@@ -55,6 +65,7 @@ OutputRange<T> Rationing<T>::operator()(ConstInputRange<T> data) const noexcept
     });
 
     return result;
+#endif
 }
 
 }

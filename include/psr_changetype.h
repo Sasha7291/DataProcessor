@@ -22,6 +22,11 @@ public:
 template<class T, class K>
 OutputRange<K> TypeChanger<T, K>::operator()(ConstInputRange<T> data) const
 {
+#if __cplusplus >= 202302L
+    return data
+        | std::views::transform([](T value) -> K { return static_cast<K>(value); })
+        | std::ranges::to<OutputRange>();
+#else
     OutputRange<K> result;
     result.reserve(data.size());
 
@@ -30,6 +35,7 @@ OutputRange<K> TypeChanger<T, K>::operator()(ConstInputRange<T> data) const
     });
 
     return result;
+#endif
 }
 
 }

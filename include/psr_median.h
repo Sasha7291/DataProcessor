@@ -11,15 +11,15 @@ class Median
 {
 
 public:
-    Median() noexcept = default;
-    ~Median() noexcept = default;
+    Median() = default;
+    ~Median() = default;
 
-    [[nodiscard(R"(Time complexity O(data.size() * log(data.size())))")]] T operator()(ConstInputRange<T> data) const noexcept;
+    [[nodiscard(R"(Time complexity O(data.size() * log(data.size())))")]] T operator()(ConstInputRange<T> data) const;
 
 };
 
 template<class T>
-T Median<T>::operator()(ConstInputRange<T> data) const noexcept
+T Median<T>::operator()(ConstInputRange<T> data) const
 {
     OutputRange<T> sortedData{data.cbegin(), data.cend()};
     std::ranges::sort(sortedData);
@@ -29,6 +29,5 @@ T Median<T>::operator()(ConstInputRange<T> data) const noexcept
                ? (*middleElement)
                : ((*middleElement + *(middleElement - 1)) / 2);
 }
-
 
 }

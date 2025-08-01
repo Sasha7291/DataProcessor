@@ -11,11 +11,11 @@ class Variance
 {
 
 public:
-    explicit Variance(double average) noexcept;
-    Variance() noexcept;
-    ~Variance() noexcept = default;
+    explicit Variance(double average);
+    Variance();
+    ~Variance() = default;
 
-    [[nodiscard(R"(Time complexity O(data.size()))")]] double operator()(ConstInputRange<T> data) const noexcept;
+    [[nodiscard(R"(Time complexity O(data.size()))")]] double operator()(ConstInputRange<T> data) const;
 
 private:
     std::optional<double> average_;
@@ -23,17 +23,17 @@ private:
 };
 
 template<class T>
-Variance<T>::Variance(double average) noexcept
+Variance<T>::Variance(double average)
     : average_{std::make_optional(average)}
 {}
 
 template<class T>
-Variance<T>::Variance() noexcept
+Variance<T>::Variance()
     : average_{std::nullopt}
 {}
 
 template<class T>
-double Variance<T>::operator()(ConstInputRange<T> data) const noexcept
+double Variance<T>::operator()(ConstInputRange<T> data) const
 {
     OutputRange<T> discrepancy;
     discrepancy.reserve(data.size());
