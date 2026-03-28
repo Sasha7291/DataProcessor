@@ -52,7 +52,7 @@ OutputRange<T> Rationing<T>::operator()(ConstInputRange<T> data) const
                 return static_cast<T>((static_cast<double>(value) - oldRange.first) / oldRange.second * newRange.second + newRange.first);
             }
         )
-        | std::ranges::to<OutputRange>();
+        | std::ranges::to<OutputRange<T>>();
 #else
     OutputRange<T> result;
     result.reserve(data.size());

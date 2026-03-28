@@ -25,7 +25,7 @@ OutputRange<K> TypeChanger<T, K>::operator()(ConstInputRange<T> data) const
 #if __cplusplus >= 202302L
     return data
         | std::views::transform([](T value) -> K { return static_cast<K>(value); })
-        | std::ranges::to<OutputRange>();
+        | std::ranges::to<OutputRange<K>>();
 #else
     OutputRange<K> result;
     result.reserve(data.size());

@@ -49,7 +49,7 @@ OutputRange<T> Standartize<T>::operator()(ConstInputRange<T> data) const
                 return static_cast<T>((value - aver) / var);
             }
         )
-        | std::ranges::to<OutputRange>();
+        | std::ranges::to<OutputRange<T>>();
 #else
     OutputRange<T> result;
     result.reserve(data.size());
