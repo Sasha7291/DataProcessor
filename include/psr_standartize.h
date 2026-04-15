@@ -40,13 +40,19 @@ template<class T>
 OutputRange<T> Standartize<T>::operator()(ConstInputRange<T> data) const
 {
 #if __cplusplus >= 202302L
-    auto aver = average_.has_value() ? average_.value() : Average<T>{}(data);
-    auto var = variance_.has_value() ? variance_.value() : Variance<T>{aver}(data);
+    const auto aver =
+        (average_.has_value())
+            ? (average_.value())
+            : (Average<T>{}(data));
+    const auto var =
+        (variance_.has_value())
+            ? (variance_.value())
+            : (Variance<T>{aver}(data));
 
     return data
         | std::views::transform(
             [aver, var](T value) -> T {
-                return static_cast<T>((value - aver) / var);
+                return static_cast<T>((value - aver) / std::sqrt(var));
             }
         )
         | std::ranges::to<OutputRange<T>>();
@@ -54,8 +60,14 @@ OutputRange<T> Standartize<T>::operator()(ConstInputRange<T> data) const
     OutputRange<T> result;
     result.reserve(data.size());
 
-    auto aver = average_.has_value() ? average_.value() : Average<T>{}(data);
-    auto var = variance_.has_value() ? variance_.value() : Variance<T>{aver}(data);
+    const auto aver =
+        (average_.has_value())
+            ? (average_.value())
+            : (Average<T>{}(data));
+    const auto var =
+        (variance_.has_value())
+            ? (variance_.value())
+            : (Variance<T>{aver}(data));
     std::ranges::transform(data, std::back_inserter(result), [aver, var](T value) -> T {
         return static_cast<T>((value - aver) / var);
     });

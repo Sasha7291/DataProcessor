@@ -25,7 +25,7 @@ OutputRange<T> Unique<T>::operator()(ConstInputRange<T> data) const
     OutputRange<T> result(data.cbegin(), data.cend());
 
     std::ranges::sort(result);
-    std::ranges::unique(result);
+    (void)std::ranges::unique(result);
 
     return result;
 }
