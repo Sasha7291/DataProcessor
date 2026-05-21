@@ -41,7 +41,7 @@ double Variance<T>::operator()(ConstInputRange<T> data) const
     auto aver = average_.has_value() ? average_.value() : Average<T>{}(data);
     std::ranges::transform(data, std::back_inserter(discrepancy), std::bind(std::minus<>(), std::placeholders::_1, aver));
 
-    return Average<T>{}(discrepancy, 2);
+    return std::pow(Average<T>{}(discrepancy, 2), 2.0);
 }
 
 }
